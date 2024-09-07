@@ -2,10 +2,9 @@
 
   "manifest_version": 2,
   "name": "site-blocker-when-vpn-down",
-  "description": "This Firefox extension blocks connections to certain domains (including subdomains) when your anonymity VPN is down.\n\n******IMPORTANT******: The installation script installs a systemctl service that is necessary for the extension to work properly. It works on Linux. Check https://github.com/sam-maverick/browsing-privacy-vpn-check-extension for more information.",
+  "description": "This Firefox extension blocks connections to certain domains (including subdomains) when your anonymity VPN is down.\n\n***IMPORTANT***: Works on Linux and requires systemctl. Check \"Support website\" for more info.",
   "version": "1.0",
   "homepage_url": "https://github.com/sam-maverick/browsing-privacy-vpn-check-extension",
-  "strict_min_version": "91.1.0",
 
   "icons": {
     "48": "icons/block.svg",
@@ -14,7 +13,7 @@
 
   "browser_specific_settings": {
     "gecko": {
-      "strict_min_version": "56.0a1"
+      "strict_min_version": "91.1.0"
     }
   },
 

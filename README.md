@@ -5,6 +5,8 @@ This is a Firefox extension that allows you to block connections to specific dom
 
 This software is based on https://github.com/mdn/webextensions-examples/tree/main/proxy-blocker and https://pythonbasics.org/webserver/.
 
+The software does not log connections (not even locally), nor it collects/shares any personal information.
+
 See the LICENSE files for licensing information.
 
 ## System requirements
@@ -25,6 +27,6 @@ It uses the proxy API listener `onRequest` to listen for requests to visit a web
 * Download this repo in some folder of your computer.
 * Open a terminal, go to your repo, and `cd webserver-local`. Then run `node ./installer.linux.js` and follow the on-screen instructions.
 * Check that your local web server is running by visiting http://localhost:4567/getvpnstatus. You should get either `status=UP` or `status=DOWN`.
-* Install the `site-blocker-when-vpn-down` extension in Firefox, if you have not yet done so.
+* Install the `site-blocker-when-vpn-down` extension in Firefox (you can download it from [here](https://addons.mozilla.org/en-US/firefox/addon/site-blocker-when-vpn-down/)), if you have not yet done so.
 * Visit `about:addons`, open this add-on's Preferences, and replace the default values by the list of domains you want to protect. One per line. Do not use wildcard, since all subdomains will automatically be protected.
 * **Important:** On the Preferences tab, set "Run in Private Windows" to "Allow".
