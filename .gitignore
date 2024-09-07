@@ -10,3 +10,6 @@
 
 # Keys
 secrets/
+
+# Extension pack
+*.zip
