@@ -1,0 +1,12 @@
+# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+
+# macOS
+.DS_Store
+._*
+
+# local env files
+.env*.local
+.env
+
+# Keys
+secrets/
