@@ -23,7 +23,7 @@ It uses the proxy API listener `onRequest` to listen for requests to visit a web
 ## Installation
 
 * Download this repo in some folder of your computer.
-* Open a terminal, go to your repo, and `cd webserver-local`. Then run `node ./installer.linux.sh` and follow the on-screen instructions.
+* Open a terminal, go to your repo, and `cd webserver-local`. Then run `node ./installer.linux.js` and follow the on-screen instructions.
 * Check that your local web server is running by visiting http://localhost:4567/getvpnstatus. You should get either `status=UP` or `status=DOWN`.
 * Install the `site-blocker-when-vpn-down` extension in Firefox, if you have not yet done so.
 * Visit `about:addons`, open this add-on's Preferences, and replace the default values by the list of domains you want to protect. One per line. Do not use wildcard, since all subdomains will automatically be protected.
