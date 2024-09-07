@@ -3,6 +3,8 @@
 
 This is a Firefox extension that allows you to block connections to specific domains (and subdomains) when your anonymity VPN is down. It may be useful if you don't wan't to use the kill switch but still want to have privacy when browsing certain sites. Note that there is a remote possibility that your VPN drops between the time the VPN status is checked and the time the connection is allowed, in which case the connection would not be protected. 
 
+Connections to the protected domains made in non-incognito mode are also blocked if the option is activated. In those cases, the associated entry in the browsing history is also deleted for privacy. This is useful in case you forgot to visit the site in incognito mode.
+
 This software is based on https://github.com/mdn/webextensions-examples/tree/main/proxy-blocker and https://pythonbasics.org/webserver/.
 
 The software does not log connections (not even locally), nor it collects/shares any personal information.
