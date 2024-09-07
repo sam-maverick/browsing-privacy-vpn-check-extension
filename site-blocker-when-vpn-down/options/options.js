@@ -1,10 +1,13 @@
 const blockedHostsTextArea = document.querySelector("#blocked-hosts");
+const forceIncognitoCheckbox = document.querySelector("#force-incognito");
 
 // Store the currently selected settings using browser.storage.local.
 function storeSettings() {
   let blockedHosts = blockedHostsTextArea.value.split("\n");
+  let forceIncognito = forceIncognitoCheckbox.checked;
   browser.storage.local.set({
-    blockedHosts
+    blockedHosts,
+    forceIncognito,
   });
 }
 
@@ -12,6 +15,7 @@ function storeSettings() {
 // or the default settings if the stored settings are empty.
 function updateUI(restoredSettings) {
   blockedHostsTextArea.value = restoredSettings.blockedHosts.join("\n");
+  forceIncognitoCheckbox.checked = restoredSettings.forceIncognito;
 }
 
 function onError(e) {
@@ -23,3 +27,4 @@ browser.storage.local.get().then(updateUI, onError);
 
 // Whenever the contents of the textarea changes, save the new values
 blockedHostsTextArea.addEventListener("change", storeSettings);
+forceIncognitoCheckbox.addEventListener("change", storeSettings);
