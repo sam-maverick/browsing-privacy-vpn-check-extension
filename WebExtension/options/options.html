@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="options.css"/>
+  </head>
+
+  <body>
+
+    <section>
+      <p>
+      <span class="title"><strong>Domains to block when VPN is down</strong><br>(One per line)<br>(Do not use wildcard; subdomains are always included)<br>(Do not add the 'ip.me' or 'me' domains to the list)</span>
+      <textarea id="blocked-hosts" rows="10" cols="50"></textarea>
+      <input type="checkbox" id="force-incognito" name="force-incognito" value="yes">
+      <label for="force-incognito">Also force incognito mode on these sites<br>This requires that you grant the "Run in Private Windows" permission to this add-on manually.</label><br>
+    </section>
+
+    <section>
+      <p>
+      <span class="title"><strong>Mode of operation</strong></span><br>
+      <input type="radio" id="localservice" name="modeOfOperation" value="LOCALSERVICE">
+      <label for="localservice">Use local service<br>This is the most robust mode, but only works in Linux and requires to install a local service with systemctl. Check <a href="https://github.com/sam-maverick/browsing-privacy-vpn-check-extension" target="_blank">here</a> for more information.</label><br>
+      <input type="radio" id="externalcheck" name="modeOfOperation" value="EXTERNALCHECK" checked>
+      <label for="externalcheck">Check externally with https://ip.me that my IP is not in <input type="text" id="country-code" maxlength="2" size="2"> country code<br>Only works when your VPN profile connects to a different country than yours.</label><br>
+    </section>
+
+    <section>
+      <p>
+      <span class="title"><strong>Debugging</strong></span><br>
+      <input type="radio" id="on" name="debugging" value="ON">
+      <label for="on">On</label><br>
+      <input type="radio" id="off" name="debugging" value="OFF" checked>
+      <label for="off">Off</label><br>
+    </section>
+
+    <script src="options.js"></script>
+  </body>
+
+</html>

@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 const readline = require('readline');
 const { promisify } = require('util');
-const exec = promisify(require('child_process').exec)
+const exec = promisify(require('child_process').exec);
 const fs = require('fs');
 const path = require('path');
 const util = require('util');
@@ -23,8 +23,8 @@ const rl1a = readline.createInterface({
 });
 
 
-const ReplaceInFile = async (basePath, dir, filename, regexpFind, replacement) => {
-    const fullpath = path.join(__dirname, 'webserver-local', 'webserverlocal.py');
+const ReplaceInFile = async (basePath, filename, regexpFind, replacement) => {
+    const fullpath = path.join(__dirname, filename);
     fs.readFile(fullpath, 'utf8', function async (err, data) {
         if (err) {
             console.error(`Error when reading ${filename}: `+err);
@@ -79,11 +79,11 @@ const DoInstall = async () => {
             rl1a.question(`Now type the name that corresponds to your VPN, inspired from the list of candidates. Spaces and hashes are ok. If you see something like MyVpnProvider #US #1, I recommend to type MyVpnProvider.\n`, async (enteredvpnname) => {
                 vpnname = enteredvpnname.trim();
                 console.log(`You entered ${enteredvpnname}`);
-                await ReplaceInFile (__dirname, 'webserver-local', 'webserverlocal.py', /PARAMETER_VPN_IDENTIFIER = ".*"/, `PARAMETER_VPN_IDENTIFIER = "${vpnname}"`);
+                await ReplaceInFile (__dirname, 'webserverlocal.py', /PARAMETER_VPN_IDENTIFIER = ".*"/, `PARAMETER_VPN_IDENTIFIER = "${vpnname}"`);
 
                 console.log('Copying programs to /usr/local/bin');
-                await RunCommand(`cp "${path.join(__dirname, 'webserver-local', 'webserverlocal.py')}" /usr/local/bin/`);
-                await RunCommand(`cp "${path.join(__dirname, 'webserver-local', 'webserverlocal.sh')}" /usr/local/bin/`);
+                await RunCommand(`cp "${path.join(__dirname, 'webserverlocal.py')}" /usr/local/bin/`);
+                await RunCommand(`cp "${path.join(__dirname, 'webserverlocal.sh')}" /usr/local/bin/`);
 
                 console.log('Adding websrvloc user and group');
                 await RunCommand(`groupadd websrvloc`);
@@ -95,7 +95,7 @@ const DoInstall = async () => {
                 await RunCommand(`chmod u+x /usr/local/bin/webserverlocal.sh`);
 
                 console.log('Configuring service');
-                await RunCommand(`cp "${path.join(__dirname, 'webserver-local', 'service_template.service')}" /etc/systemd/system/webserverlocal.service`);
+                await RunCommand(`cp "${path.join(__dirname, 'service_template.service')}" /etc/systemd/system/webserverlocal.service`);
 
                 console.log('Reloading systemctl daemon to apply configuration');
                 await RunCommand('systemctl daemon-reload');
