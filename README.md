@@ -1,7 +1,7 @@
 
 ## What is this?
 
-This is a Firefox extension that allows you to block connections to specific domains (and subdomains) when your anonymity VPN is down. It may be useful if you don't wan't to use the kill switch but still want to have privacy when browsing certain sites. It helps prevent leaking information to your ISP or internet provider when you forgot to activate the VPN and you browse a sensitive site. Note that there is a remote possibility that your VPN drops between the time the VPN status is checked and the time the connection is allowed, in which case the connection would not be protected. 
+This is a browser extension that allows you to block connections to specific domains (and subdomains) when your anonymity VPN is down. It may be useful if you don't wan't to use the kill switch but still want to have privacy when browsing certain sites. It helps prevent leaking information to your ISP or internet provider when you forgot to activate the VPN and you browse a sensitive site. Note that there is a remote possibility that your VPN drops between the time the VPN status is checked and the time the connection is allowed, in which case the connection would not be protected. 
 
 This software is inspired on https://github.com/mdn/webextensions-examples/tree/main/proxy-blocker and https://pythonbasics.org/webserver/.
 
@@ -13,11 +13,11 @@ See the LICENSE files for licensing information.
 
 The main requirement is:
 
-- A browser that supports the WebExtensions API (e.g., **Firefox**).
+- A browser that supports the WebExtensions API (e.g., Firefox).
 
 If you want to use the more reliable "local service" mode of operation instead of the default "check externally", then there are these additional requirements:
 
-- You run the browser on a Linux system (e.g., **Ubuntu**).
+- You run the browser on a **Linux** system.
   If you are on Windows or Mac, you can still make it work but you'll need to adapt things by yourself.
 - **Sudo** privileges.
 - **Node** installed. Check [this](https://nodejs.org/en/download/prebuilt-installer) for more info.
