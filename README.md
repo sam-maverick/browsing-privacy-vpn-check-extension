@@ -37,8 +37,10 @@ If you want to use the more reliable "local service" mode of operation instead o
 
 ## Installation
 
-* Install the `site-blocker-when-vpn-down` extension in Firefox (you can download it from [here](https://addons.mozilla.org/en-US/firefox/addon/site-blocker-when-vpn-down/)), if you have not yet done so.
-* Visit `about:addons`, open this add-on's Preferences, and configure the options as appropriate.
+In Firefox, you install this extension like that:
+
+* Install the `site-blocker-when-vpn-down` extension in Firefox. You can download it from [here](https://addons.mozilla.org/en-US/firefox/addon/site-blocker-when-vpn-down/), if you have not yet done so.
+* Open `about:addons` in the browser's address bar, open this add-on's Preferences, and configure the options as appropriate.
 * **Important:** On the Preferences tab, set "Run in Private Windows" to "Allow".
 
 If you want to use the "use local service" mode of operation, you will need to perform these additional steps:
