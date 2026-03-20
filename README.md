@@ -1,3 +1,8 @@
+| What to install this extension on Firefox? Go to:            |
+| ------------------------------------------------------------ |
+| [https://addons.mozilla.org/en-US/firefox/addon/site-blocker-when-vpn-down/](https://addons.mozilla.org/en-US/firefox/addon/site-blocker-when-vpn-down/) |
+
+
 
 ## What is this?
 
