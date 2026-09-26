@@ -9,8 +9,11 @@ const host = 'localhost';
 const port = '4567';
 
 
-// Set the default list on installation.
+// Set the default list on first installation only
 browser.runtime.onInstalled.addListener(details => {
+  if (details.reason !== 'install') {
+    return;
+  }
   browser.storage.local.set({
     blockedHosts: blockedHosts,
     forceIncognito: forceIncognito,
@@ -81,7 +84,7 @@ async function DeleteLastEntryHistory(textsearch) {
 async function handleProxyRequest(requestInfo) {
 // Read the web address of the page to be visited 
   const url = new URL(requestInfo.url);
-  const hostconnecting = String(url.hostname).toLocaleLowerCase().trim();
+  const hostconnecting = String(url.hostname).toLocaleLowerCase().trim().replace(/\.$/, '');
   if (debugging)  console.log("Connection request for: "+requestInfo.url);
 
   if (hostconnecting=='ip.me') {
@@ -91,10 +94,12 @@ async function handleProxyRequest(requestInfo) {
 
   for (let i = 0; i < blockedHosts.length; i++) {
     const hostentry = String(blockedHosts[i]).toLocaleLowerCase().trim();
+    if (hostentry === '') {
+      continue;
+    }
     if (debugging)  console.log("Checking: "+hostentry);
-    let pattern = new RegExp("^(.*)" + hostentry + "$");
-    // Determine whether the domain in the web address is on the blocked hosts list
-    if (pattern.test(hostconnecting) || (hostconnecting == hostentry)) {
+    // Determine whether the domain in the web address is on the blocked hosts list (or a subdomain of it)
+    if (hostconnecting === hostentry || hostconnecting.endsWith('.' + hostentry)) {
       // Domain matched !
       if (debugging)  console.log('Domain matched!');
         
@@ -102,9 +107,13 @@ async function handleProxyRequest(requestInfo) {
         // Check incognito mode
         if ( ! requestInfo.incognito) {
           // Prevent from adding to browsing history
-          await DeleteLastEntryHistory(hostconnecting);
+          try {
+            await DeleteLastEntryHistory(hostconnecting);
+          } catch (err) {
+            if (debugging)  console.error(`Could not clear browsing history entry: ${err.message}`);
+          }
           // Proxy to a cul-de-sac
-          if (debugging)  console.log('Browsing history entry cleared. Denying connection because not in incognito mode');
+          if (debugging)  console.log('Denying connection because not in incognito mode');
           return {type: "http", host: "127.0.0.1", port: 65535};
         }
       }
@@ -134,32 +143,34 @@ async function handleProxyRequest(requestInfo) {
           return {type: "http", host: "127.0.0.1", port: 65535};
         }
       } else if (modeOfOperation == 'externalcheck') {
-        // ToDo
-        let http;
-        var data;
-        http = new XMLHttpRequest();
-        http.open('GET', 'https://ip.me/', false);
-        http.send();
-        data = http.responseText;
-        //console.log("Received from server: " + data);
+        try {
+          let http = new XMLHttpRequest();
+          http.open('GET', 'https://ip.me/', false);
+          http.send();
+          let data = http.responseText;
 
-        let datatrimmed = data.replace(/ /g, '').replace(/\n/g, '').replace(/\r/g, '');
+          let datatrimmed = data.replace(/ /g, '').replace(/\n/g, '').replace(/\r/g, '');
 
-        if (datatrimmed.includes('<tr><th>CountryCode:</th><td><code>' + countryCode.toLocaleUpperCase() + '</code></td></tr>')) {
-          // Connecting from the same country. Proxy to a cul-de-sac
-          if (debugging)  console.log('Denying connection because external check tells that we are in the same country');
-          return {type: "http", host: "127.0.0.1", port: 65535};
-        } else if (datatrimmed.includes('<tr><th>CountryCode:</th><td><code>')) {
-          // We received a valid check. Continue connection
-          return {type: "direct"};
-        }  else {
-          // Invalid data received from server. Proxy to a cul-de-sac
-          if (debugging)  console.log('Denying connection because external check gave an unexpected reply');
+          if (datatrimmed.includes('<tr><th>CountryCode:</th><td><code>' + countryCode.toLocaleUpperCase() + '</code></td></tr>')) {
+            // Connecting from the same country. Proxy to a cul-de-sac
+            if (debugging)  console.log('Denying connection because external check tells that we are in the same country');
+            return {type: "http", host: "127.0.0.1", port: 65535};
+          } else if (datatrimmed.includes('<tr><th>CountryCode:</th><td><code>')) {
+            // We received a valid check. Continue connection
+            return {type: "direct"};
+          } else {
+            // Invalid data received from server. Proxy to a cul-de-sac
+            if (debugging)  console.log('Denying connection because external check gave an unexpected reply');
+            return {type: "http", host: "127.0.0.1", port: 65535};
+          }
+        } catch (err) {
+          // Could not reach ip.me (or another error). Proxy to a cul-de-sac
+          if (debugging)  console.error(`An exception occurred: ${err.message}`);
+          if (debugging)  console.error('Denying connection because the external check with https://ip.me failed');
           return {type: "http", host: "127.0.0.1", port: 65535};
         }
 
       } else {
-        if (debugging)  console.error(`An exception occurred: ${err.message}`);
         if (debugging)  console.error(`Invalid configuration; modeOfOperation must be either localservice or externalcheck.`);
         return {type: "http", host: "127.0.0.1", port: 65535};
       }
