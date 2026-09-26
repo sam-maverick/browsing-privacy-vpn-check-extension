@@ -94,11 +94,11 @@ const DoInstall = async () => {
                     process.exit(1);
                 }                
                 const line = `PARAMETER_VPN_INTERFACE = ${JSON.stringify(vpnname)}`;
-                await ReplaceInFile(__dirname, 'webserverlocal.py', /PARAMETER_VPN_INTERFACE = ".*"/, () => line);
 
                 console.log('Copying programs to /usr/local/bin');
-                await RunCommand(`install -o root -g root -m 755 "${path.join(__dirname, 'webserverlocal.py')}" /usr/local/bin/`);
                 await RunCommand(`install -o root -g root -m 755 "${path.join(__dirname, 'webserverlocal.sh')}" /usr/local/bin/`);
+                await RunCommand(`install -o root -g root -m 755 "${path.join(__dirname, 'webserverlocal.py')}" /usr/local/bin/`);
+                await ReplaceInFile('/usr/local/bin', 'webserverlocal.py', /PARAMETER_VPN_INTERFACE = ".*"/, () => line);
 
                 console.log('Adding websrvloc user and group');
                 await RunCommand(`getent group websrvloc >/dev/null || groupadd --system websrvloc`);

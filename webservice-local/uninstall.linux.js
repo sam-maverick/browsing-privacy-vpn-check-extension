@@ -69,7 +69,7 @@ const DoUninstall = async () => {
     await RunCommand(`if getent group ${SERVICE_USER} >/dev/null; then groupdel ${SERVICE_USER}; fi`);
 
     console.log('\nUninstall complete.');
-    console.log('Note: webserverlocal.py in this folder still contains your VPN interface name. Restore it with "git checkout webserverlocal.py" if you want the original.');
+    
 };
 
 DoUninstall().catch(err => {
