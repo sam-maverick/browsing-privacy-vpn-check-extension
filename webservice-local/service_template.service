@@ -2,6 +2,8 @@
 Description=Local web server for VPN status verification
 
 [Service]
+User=websrvloc
+Group=websrvloc
 PrivateTmp=true
 Restart=on-failure
 RestartSec=60s

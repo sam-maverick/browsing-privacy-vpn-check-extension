@@ -51,8 +51,15 @@ In Firefox, you install this extension like that:
 If you want to use the "use local service" mode of operation, you will need to perform these additional steps:
 
 * Download this repo in some folder of your computer.
-* Open a terminal, go to your repo, and `cd webservice-local`. Then run `node ./installer.linux.js` and follow the on-screen instructions.
+* Open a terminal, go to your repo, and `cd webservice-local`. Then run `node ./install.linux.js` and follow the on-screen instructions.
 * Check that your local web server is running by visiting http://localhost:4567/getvpnstatus. You should get either `status=UP` or `status=DOWN`.
+* To troubleshoot. use: `journalctl -u webserverlocal -f`
+
+## Uninstallation
+
+Remove the plugin on your browser.
+
+If you used the "use local service" mode of operation, go to the `webservice-local` folder on the command line, and do `sudo node uninstall.linux.js`
 
 ## A few boring technical details...
 

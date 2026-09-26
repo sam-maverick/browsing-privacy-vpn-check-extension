@@ -4,14 +4,24 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import time
 import subprocess
+import sys
 
 PARAMETER_HOSTNAME = "localhost"
 PARAMETER_PORT = 4567
-# If you don't know your identifier, bring the VPN up and run the command:
-# nmcli connection show --active | awk '{print substr($0,0,22)}'
-PARAMETER_VPN_IDENTIFIER = "placeholder"
+# Set by the installer: the network interface the VPN creates (see: ip -brief link)
+PARAMETER_VPN_INTERFACE = "placeholder"
 
-
+def get_vpn_status():
+    try:
+        with open(f"/sys/class/net/{PARAMETER_VPN_INTERFACE}/flags") as f:
+            flags = int(f.read().strip(), 16)
+    except FileNotFoundError:
+        return "DOWN"
+    except (OSError, ValueError) as e:
+        print(f"Could not read interface state: {e}", file=sys.stderr)
+        return "ERROR"
+    return "UP" if flags & 0x1 else "DOWN"
+        
 class MyServer(BaseHTTPRequestHandler):
     def log_message(self, format, *args):
         # Always avoid storing connection information
@@ -24,17 +34,7 @@ class MyServer(BaseHTTPRequestHandler):
             self.send_header("Pragma", "no-cache")
             self.send_header("Expires", 0)
             self.end_headers()
-
-            status = ""
-            try:
-                result = subprocess.check_output("nmcli --terse --fields NAME connection show --active | grep '"+PARAMETER_VPN_IDENTIFIER+"'", shell=True)
-                if PARAMETER_VPN_IDENTIFIER in result.decode("utf-8"):
-                    status = "UP"
-                else:
-                    status = "UNKNOWN"
-            except subprocess.CalledProcessError as e:
-                status = "DOWN"
-            
+            status = get_vpn_status()
             self.wfile.write(bytes("status=" + status, "utf-8"))
 
         else:
@@ -57,6 +57,7 @@ if __name__ == "__main__":
     try:
         webServer.serve_forever()
     except KeyboardInterrupt:
+        print(f"KeyboardInterrupt caught")
         pass
 
     webServer.server_close()

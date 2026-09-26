@@ -1,9 +1,10 @@
 #!/bin/bash
 
-cd "$(dirname "$0")"
+cd "$(dirname "$0")" || exit 1
 
-echo "$(date) webserverlocal.sh: Iniltializing"
+echo "webserverlocal.sh: Initializing"
 
-python3 ./webserverlocal.py #>> webserverlocal.log 2>> webserverlocal.log
+exec python3 -u ./webserverlocal.py
 
-echo "$(date) webserverlocal.sh: Terminating"
+#journalctl -u webserverlocal         # full history
+#journalctl -u webserverlocal -f      # follow live, like tail -f
